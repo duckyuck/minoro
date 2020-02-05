@@ -62,7 +62,7 @@ the `with-factories` helper macro. Here's an example of the latter:
 
 ## Extensibility
 
-You can extend Minoro to work with any other data type. This is done by implementing protocols
+You can extend Minoro to work with any data type. This is accomplished by implementing protocols
 in the [minoro.protocols](src/minoro/protocols.clj) namespace. Have a look at the [minoro.impl](src/minoro/impl.clj) namespace for examples
 on how Minoro implements these protocols for the basic Clojure data types.
 
