@@ -46,7 +46,7 @@ Now, let's shrink `data` according to our predicates.
 Great! That's pretty much the minimal dataset our predicate function is happy with.
 
 Minoro ships with default implementations (a.k.a. factories) for shrinking Clojure vectors, maps, sets, strings and seqs.
-However, the implementation for shrinking strings is not enabled by default, and must be either `install!`ed explicitly, or activated via
+However, the implementation for shrinking strings is not enabled by default, and must be either `install!`ed explicitly or activated via
 the `with-factories` helper macro. Here's an example of the latter:
 
 ```clj
@@ -57,13 +57,13 @@ the `with-factories` helper macro. Here's an example of the latter:
 (with-factories all-factories
   (shrink-with ok? "!%3&%#$&# shrink me #$%&/(%%!"))
 
-=> "shrink me"
+;; => "shrink me"
 ```
 
 ## Extensibility
 
 You can extend Minoro to work with any other data type. This is done by implementing protocols
-in the [minoro.protocols](src/minoro/protocols.clj) protocols namespace. Have a look at the [minoro.impl](src/minoro/impl.clj) namespace for examples
+in the [minoro.protocols](src/minoro/protocols.clj) namespace. Have a look at the [minoro.impl](src/minoro/impl.clj) namespace for examples
 on how Minoro implements these protocols for the basic Clojure data types.
 
 ## Install
