@@ -110,27 +110,31 @@
        (if (= (count right) 1)
          (create-none-wrapper create-shrinkable-value right)
          (create-shrinkable right)))
-     combine)))
+     (comp #(with-meta % (meta val)) combine))))
 
-(let [args {:seq->type vec
+(def create-vector
+  (partial create-collection
+           {:seq->type vec
             :combine (comp vec (partial apply concat))
-            :create-shrinkable-value (partial create-collection-value-wrapper vector)}]
-  (defn create-vector [val] (create-collection args val)))
+            :create-shrinkable-value (partial create-collection-value-wrapper vector)}))
 
-(let [args {:seq->type sequence
+(def create-seq
+  (partial create-collection
+           {:seq->type sequence
             :combine (partial apply concat)
-            :create-shrinkable-value (partial create-collection-value-wrapper (comp seq vector))}]
-  (defn create-seq [val] (create-collection args val)))
+            :create-shrinkable-value (partial create-collection-value-wrapper (comp seq vector))}))
 
-(let [args {:seq->type set
+(def create-set
+  (partial create-collection
+           {:seq->type set
             :combine (partial apply set/union)
-            :create-shrinkable-value (partial create-collection-value-wrapper hash-set)}]
-  (defn create-set [val] (create-collection args val)))
+            :create-shrinkable-value (partial create-collection-value-wrapper hash-set)}))
 
-(let [args {:seq->type (partial apply str)
+(def create-string
+  (partial create-collection
+           {:seq->type (partial apply str)
             :combine (partial apply str)
-            :create-shrinkable-value (partial create-collection-value-wrapper str)}]
-  (defn create-string [val] (create-collection args val)))
+            :create-shrinkable-value (partial create-collection-value-wrapper str)}))
 
 (defrecord MapEntry [k v]
   p/IShrinkable
@@ -145,7 +149,8 @@
   (let [[k v] (first m)]
     (->MapEntry k (create-shrinkable v))))
 
-(let [args {:seq->type (partial into {})
+(def create-map
+  (partial create-collection
+           {:seq->type (partial into {})
             :combine (partial apply merge {})
-            :create-shrinkable-value create-map-entry}]
-  (defn create-map [val] (create-collection args val)))
+            :create-shrinkable-value create-map-entry}))

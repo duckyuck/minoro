@@ -91,7 +91,7 @@
     (testing "skip returns shrunk wrapped shrinkable"
       (is (= (p/skip x) (p/shrink (create-wrapped 42)))))))
 
-(deftest shrinkable-vector
+(deftest collection
   (testing "0 elements"
     (let [x (sut/create-vector [])]
       (is (= (p/value x) []))
@@ -431,4 +431,10 @@
                                 (let [x (p/skip x)]
                                   (is (= (p/value x) [1 2 3 4]))
                                   (is (not (p/shrinkable? x)))
-                                  (is (p/exhausted? x)))))))))))))))))))
+                                  (is (p/exhausted? x))))))))))))))))))
+
+  (testing "preserves meta"
+    (let [[one two :as value] (p/value (sut/create-vector ^:meta [^:meta-1 [1] ^:meta-2 [2]]))]
+      (is (= (meta value) {:meta true}))
+      (is (= (meta one) {:meta-1 true}))
+      (is (= (meta two) {:meta-2 true})))))
