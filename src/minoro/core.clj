@@ -28,7 +28,7 @@
 
 (install! (select-factories (remove #{:string} all-kinds)))
 
-(defn- create-shrinkable [factories data & [skip-none-wrapper?]]
+(defn create-shrinkable [factories data & [skip-none-wrapper?]]
   (let [create (or (:create (first (filter #(instance? (:type %) data) factories)))
                    p/create)]
     (if skip-none-wrapper?
