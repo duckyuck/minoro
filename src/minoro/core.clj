@@ -47,7 +47,7 @@
                          (let [shrinkable (action shrinkable)]
                            (let [shrunk-value (try
                                                 (let [shrunk-value (p/value shrinkable)]
-                                                  (when-not (= :minoro/none shrunk-value)
+                                                  (when-not (= shrunk-value p/none)
                                                     shrunk-value))
                                                 (catch Exception e
                                                   (throw (ex-info "value threw exception" {:shrinkable shrinkable} e))))

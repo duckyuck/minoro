@@ -28,7 +28,7 @@
 
 (def create-nil-wrapper (partial create-initial-value-wrapper nil))
 
-(def create-none-wrapper (partial create-initial-value-wrapper :minoro/none))
+(def create-none-wrapper (partial create-initial-value-wrapper p/none))
 
 (defn ^:dynamic create-shrinkable [data & [skip-none-wrapper?]]
   (if skip-none-wrapper?
@@ -74,15 +74,17 @@
         (update new-kw p/shrink))))
 
   (value [this] (->> [(p/value left) (p/value right)]
-                     (remove #{:minoro/none})
+                     (remove #{p/none})
                      combine))
 
   (exhausted? [this] (and (p/exhausted? right)
                           (or (p/exhausted? left) (= value-kw :right)))))
 
+(def unshrinkable-none (create-unshrinkable p/none))
+
 (defn create-binary-wrapper [left right combine]
-  (map->BinaryWrapper {:left (or left (create-unshrinkable :minoro/none))
-                       :right (or right (create-unshrinkable :minoro/none))
+  (map->BinaryWrapper {:left (or left unshrinkable-none)
+                       :right (or right unshrinkable-none)
                        :value-kw :left
                        :combine combine}))
 
@@ -136,7 +138,7 @@
   (shrinkable? [this] (p/shrinkable? v))
   (skip [this] (update this :v p/skip))
   (value [this] (let [v-val (p/value v)]
-                  {k (if (= v-val :minoro/none) nil v-val)}))
+                  {k (if (= v-val p/none) nil v-val)}))
   (exhausted? [this] (p/exhausted? v)))
 
 (defn create-map-entry [m]

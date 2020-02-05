@@ -7,5 +7,7 @@
   (value [this])
   (exhausted? [this]))
 
+(def none :minoro/none)
+
 (defprotocol IShrinkableFactory
   (create [this]))
