@@ -2,6 +2,13 @@
 
 Minoro is a Clojure library for shrinking your data.
 
+## Install
+
+* deps.edn: `minoro {:mvn/version "2020-02-06"}`
+* Leiningen: `[minoro "2020-02-06"]`
+
+## Use
+
 Given some data and a predicate you supply, `minoro.core/shrink-with` will returned a shrunk
 variant of the provided data.
 
@@ -106,11 +113,6 @@ install the factories via `install!`.
 You can extend Minoro to work with any data type. This is accomplished by implementing protocols
 in the [minoro.protocols](src/minoro/protocols.clj) namespace. Have a look at the [minoro.impl](src/minoro/impl.clj) namespace for examples
 on how Minoro implements these protocols for the basic Clojure data types.
-
-## Install
-
-* Leiningen: `[minoro "2020-02-06"]`
-* deps.edn: `minoro {:mvn/version "2020-02-06"}`
 
 ## Development
 
