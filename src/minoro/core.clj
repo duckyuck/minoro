@@ -52,7 +52,7 @@
                                                 (catch Exception e
                                                   (throw (ex-info "value threw exception" {:shrinkable shrinkable} e))))
                                  ok? (try
-                                       (pred shrunk-value)
+                                       (if (pred shrunk-value) true false)
                                        (catch Exception e false))
                                  shrinkable (assoc shrinkable :minoro/ok? ok?)]
                              (cond
