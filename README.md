@@ -36,7 +36,7 @@ Now, let's shrink `data` according to our predicates.
 ```clj
 (require '[minoro.core :refer [shrink-with install!]])
 
-(install!) ;; minoro doesn't shrink strings, let's install handlers for all supported data types
+(install!) ;; minoro doesn't shrink strings by default, let's install handlers for all supported data types
 
 (shrink-with ok? data)
 
@@ -62,11 +62,11 @@ the `with-factories` helper macro. Here's an example of the latter:
 
 In the previous example, Minoro generated 26 permutations before exhaustedly finding the smallest one. Your dataset
 is probably considerably larger, your predicate function possibly slower. If you're worried to be waiting
-years before `shrink-with` is finally providing a shrunk variation of yourdata, `shrinkables-with` provides you the means
+years before `shrink-with` is finally providing a shrunk variation of your data, `shrinkables-with` provides you the means
 to control how many permutations to try.
 
 `shrinkables-with` expects the same parameters as `shrink-with`. However, the result is a lazy sequence of all permutations
-sent to your predicate function. The elements in this lazy sequence are object implementing the `minoro.protocols.IShrinable`
+sent to your predicate function. The elements in this lazy sequence are object implementing the `minoro.protocols.IShrinkable`
 protocol, wrapping the permutated value. The `value` function pulls the actual permutated value out of these object. The objects
 also contains a key named `:minoro/ok?`, designating to hold the boolean result of your predicate function for that permutation.
 
