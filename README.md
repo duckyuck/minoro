@@ -76,21 +76,21 @@ A few lines of code tells more than a thousand words. Let's dump the value of al
   (require '[minoro.core :refer [shrinkables-with value]])
 
   (defn ok? [numbers]
-    (clojure.set/subset? #{1 3 5 11 13} (set numbers)))
+    (clojure.set/subset? #{1 5 15} (set numbers)))
 
-  (->> (range 0 15)
+  (->> (range 0 20)
        (shrinkables-with ok?)
        (filter :minoro/ok?)
        (map value))
 
-  ;; => ((0 1 2 3 4 5 6 7 8 9 10 11 12 13 14)
-  ;;     (1 2 3 4 5 6 7 8 9 10 11 12 13 14)
-  ;;     (1 3 4 5 6 7 8 9 10 11 12 13 14)
-  ;;     (1 3 5 6 7 8 9 10 11 12 13 14)
-  ;;     (1 3 5 7 8 9 10 11 12 13 14)
-  ;;     (1 3 5 11 12 13 14)
-  ;;     (1 3 5 11 13 14)
-  ;;     (1 3 5 11 13))
+  ;; => ((0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)
+  ;;     (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)
+  ;;     (1 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)
+  ;;     (1 5 7 8 9 10 11 12 13 14 15 16 17 18 19)
+  ;;     (1 5 10 11 12 13 14 15 16 17 18 19)
+  ;;     (1 5 15 16 17 18 19)
+  ;;     (1 5 15 17 18 19)
+  ;;     (1 5 15))
 ```
 
 As the result of `shrinkable-with` is lazy, you're free to pull permutations from this sequence until you're fed up waiting for
