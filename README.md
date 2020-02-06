@@ -109,8 +109,8 @@ on how Minoro implements these protocols for the basic Clojure data types.
 
 ## Install
 
-* Leiningen: `[minoro "2020-02-05"]`
-* deps.edn: `minoro {:mvn/version "2020-02-05"}`
+* Leiningen: `[minoro "2020-02-06"]`
+* deps.edn: `minoro {:mvn/version "2020-02-06"}`
 
 ## Development
 

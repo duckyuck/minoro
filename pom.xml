@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>minoro</groupId>
   <artifactId>minoro</artifactId>
-  <version>2020-02-05</version>
+  <version>2020-02-06</version>
   <name>minoro</name>
   <dependencies>
     <dependency>
