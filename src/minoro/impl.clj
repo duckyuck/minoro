@@ -99,6 +99,11 @@
 (defn create-collection-value-wrapper [wrap-value value]
   (->CollectionValueWrapper (create-shrinkable (first value) true) wrap-value))
 
+(defn copy-meta [from to]
+  (if-let [m (meta from)]
+    (with-meta to m)
+    to))
+
 (defn create-collection [{:keys [seq->type combine create-shrinkable-value]} val]
   (let [[left right] (map seq->type (split-at (long (/ (count val) 2)) val))]
     (create-binary-wrapper
@@ -110,7 +115,7 @@
        (if (= (count right) 1)
          (create-none-wrapper create-shrinkable-value right)
          (create-shrinkable right)))
-     (comp #(with-meta % (meta val)) combine))))
+     (comp (partial copy-meta val) combine))))
 
 (def create-vector
   (partial create-collection

@@ -433,8 +433,11 @@
                                   (is (not (p/shrinkable? x)))
                                   (is (p/exhausted? x))))))))))))))))))
 
-  (testing "preserves meta"
+  (testing "preserves meta for object implementing IMeta"
+
     (let [[one two :as value] (p/value (sut/create-vector ^:meta [^:meta-1 [1] ^:meta-2 [2]]))]
       (is (= (meta value) {:meta true}))
       (is (= (meta one) {:meta-1 true}))
-      (is (= (meta two) {:meta-2 true})))))
+      (is (= (meta two) {:meta-2 true})))
+
+    (is (= (p/value (sut/create-string "ab")) "ab"))))
