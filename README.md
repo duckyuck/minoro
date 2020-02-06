@@ -60,6 +60,47 @@ the `with-factories` helper macro. Here's an example of the latter:
 ;; => "shrink me"
 ```
 
+In the previous example, Minoro generated 26 permutations before exhaustedly finding the smallest one. Your dataset
+is probably considerably larger, your predicate function possibly slower. If you're worried to be waiting
+years before `shrink-with` is finally providing a shrunk variation of yourdata, `shrinkables-with` provides you the means
+to control how many permutations to try.
+
+`shrinkables-with` expects the same parameters as `shrink-with`. However, the result is a lazy sequence of all permutations
+sent to your predicate function. The elements in this lazy sequence are object implementing the `minoro.protocols.IShrinable`
+protocol, wrapping the permutated value. The `value` function pulls the actual permutated value out of these object. The objects
+also contains a key named `:minoro/ok?`, designating to hold the boolean result of your predicate function for that permutation.
+
+A few lines of code tells more than a thousand words. Let's dump the value of all permutation marked as successful via `:minoro/ok?`.
+
+```clj
+  (require '[minoro.core :refer [shrinkables-with value]])
+
+  (defn ok? [numbers]
+    (clojure.set/subset? #{1 3 5 11 13} (set numbers)))
+
+  (->> (range 0 15)
+       (shrinkables-with ok?)
+       (filter :minoro/ok?)
+       (map value))
+
+  ;; => ((0 1 2 3 4 5 6 7 8 9 10 11 12 13 14)
+  ;;     (1 2 3 4 5 6 7 8 9 10 11 12 13 14)
+  ;;     (1 3 4 5 6 7 8 9 10 11 12 13 14)
+  ;;     (1 3 5 6 7 8 9 10 11 12 13 14)
+  ;;     (1 3 5 7 8 9 10 11 12 13 14)
+  ;;     (1 3 5 11 12 13 14)
+  ;;     (1 3 5 11 13 14)
+  ;;     (1 3 5 11 13))
+```
+
+As the result of `shrinkable-with` is lazy, you're free to pull permutations from this sequence until you're fed up waiting for
+Minoro to come up with an even more minimalistic version of your data.
+
+A few words of caveat; be careful of using `shrinkable-with` in conjuction with the `with-factories` macro. `with-factories` sets
+up thread local bindings via Clojure's `binding` macro. Exceptions mights be thrown if you were to realize the sequence returned
+from `shrinkables-with` outside the scope of `with-factories`. Either realize the result inside the body of `with-factories` or
+install the factories via `install!`.
+
 ## Extensibility
 
 You can extend Minoro to work with any data type. This is accomplished by implementing protocols
